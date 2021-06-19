@@ -1,0 +1,73 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Assets/Backgrounds/Level/l4_buildings02.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Backgrounds/Level/l7_lights.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Backgrounds/Level/l3_buildings01.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Backgrounds/Level/l6_houses.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Backgrounds/Level/l1_background.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Backgrounds/Level/l2_clouds.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Backgrounds/Level/l5_ground.png" type="Texture" id=7]
+
+[node name="Background" type="Node"]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+scroll_ignore_camera_zoom = true
+
+[node name="Gradient" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2( 960, 0 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/Gradient"]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+centered = false
+
+[node name="Clouds" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.1, 1 )
+motion_mirroring = Vector2( 960, 0 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/Clouds"]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 6 )
+centered = false
+
+[node name="FarBuildings" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.2, 1 )
+motion_mirroring = Vector2( 960, 0 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/FarBuildings"]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 3 )
+centered = false
+
+[node name="MidBuildings" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.3, 1 )
+motion_mirroring = Vector2( 960, 0 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/MidBuildings"]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 1 )
+centered = false
+
+[node name="Ground" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2( 960, 0 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/Ground"]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 7 )
+centered = false
+
+[node name="Houses" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2( 960, 0 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/Houses"]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 4 )
+centered = false
+
+[node name="Lights" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2( 960, 0 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/Lights"]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 2 )
+centered = false
