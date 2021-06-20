@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using martialvengeance.Contracts;
+using Animation = martialvengeance.Enumerations.Animation;
 
 public class Fighter : KinematicBody2D
 {
@@ -20,11 +21,15 @@ public class Fighter : KinematicBody2D
     {
         base._PhysicsProcess(delta);
         var motion = Motion.Get();
-        if (motion != Vector2.Zero)
-        {
-            AnimatedSprite.FlipH = motion < Vector2.Zero;
-            CollisionShape2D.Position = new Vector2(-50 * motion.Sign().x, CollisionShape2D.Position.y);
-        }
+        Animate(motion);
         MoveAndSlide(motion, Vector2.Up);
+    }
+
+    private void Animate(Vector2 movement)
+    {
+        AnimatedSprite.Animation = Animation.FromMovement(movement).ToString();
+        if (movement.Equals(Vector2.Zero)) return;
+        AnimatedSprite.FlipH = movement < Vector2.Zero;
+        CollisionShape2D.Position = new Vector2(-50 * movement.Sign().x, CollisionShape2D.Position.y);
     }
 }

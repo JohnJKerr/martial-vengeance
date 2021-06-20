@@ -16,9 +16,7 @@ namespace martialvengeance.Enumerations
 		public static Animation Idle = new Animation(0, nameof(Idle));
 		public static Animation Walk = new Animation(1, nameof(Walk));
 
-		public Animation FromMovement(Vector2 movement)
-		{
-			throw new NotImplementedException();
-		}
+		public static Animation FromMovement(Vector2 movement)
+			=> movement.Equals(Vector2.Zero) ? Idle : Walk;
 	}
 }

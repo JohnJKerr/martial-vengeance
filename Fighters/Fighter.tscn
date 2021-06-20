@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=42 format=2]
 
 [ext_resource path="res://Assets/Sprites/Player/idle/stickman fighter-black-1_-idle_00.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Sprites/Player/idle/stickman fighter-black-1_-idle_07.png" type="Texture" id=2]
@@ -17,12 +17,39 @@
 [ext_resource path="res://Assets/Sprites/Player/idle/stickman fighter-black-1_-idle_02.png" type="Texture" id=15]
 [ext_resource path="res://Assets/Sprites/Player/idle/stickman fighter-black-1_-idle_15.png" type="Texture" id=16]
 [ext_resource path="res://Fighters/Fighter.cs" type="Script" id=17]
+[ext_resource path="res://Assets/Sprites/Player/walk/stickman fighter-black-1_-walk normal_01.png" type="Texture" id=18]
+[ext_resource path="res://Assets/Sprites/Player/walk/stickman fighter-black-1_-walk normal_06.png" type="Texture" id=19]
+[ext_resource path="res://Assets/Sprites/Player/walk/stickman fighter-black-1_-walk normal_11.png" type="Texture" id=20]
+[ext_resource path="res://Assets/Sprites/Player/walk/stickman fighter-black-1_-walk normal_12.png" type="Texture" id=21]
+[ext_resource path="res://Assets/Sprites/Player/walk/stickman fighter-black-1_-walk normal_00.png" type="Texture" id=22]
+[ext_resource path="res://Assets/Sprites/Player/walk/stickman fighter-black-1_-walk normal_14.png" type="Texture" id=23]
+[ext_resource path="res://Assets/Sprites/Player/walk/stickman fighter-black-1_-walk normal_15.png" type="Texture" id=24]
+[ext_resource path="res://Assets/Sprites/Player/walk/stickman fighter-black-1_-walk normal_17.png" type="Texture" id=25]
+[ext_resource path="res://Assets/Sprites/Player/walk/stickman fighter-black-1_-walk normal_13.png" type="Texture" id=26]
+[ext_resource path="res://Assets/Sprites/Player/walk/stickman fighter-black-1_-walk normal_02.png" type="Texture" id=27]
+[ext_resource path="res://Assets/Sprites/Player/walk/stickman fighter-black-1_-walk normal_07.png" type="Texture" id=28]
+[ext_resource path="res://Assets/Sprites/Player/walk/stickman fighter-black-1_-walk normal_21.png" type="Texture" id=29]
+[ext_resource path="res://Assets/Sprites/Player/walk/stickman fighter-black-1_-walk normal_18.png" type="Texture" id=30]
+[ext_resource path="res://Assets/Sprites/Player/walk/stickman fighter-black-1_-walk normal_08.png" type="Texture" id=31]
+[ext_resource path="res://Assets/Sprites/Player/walk/stickman fighter-black-1_-walk normal_20.png" type="Texture" id=32]
+[ext_resource path="res://Assets/Sprites/Player/walk/stickman fighter-black-1_-walk normal_09.png" type="Texture" id=33]
+[ext_resource path="res://Assets/Sprites/Player/walk/stickman fighter-black-1_-walk normal_16.png" type="Texture" id=34]
+[ext_resource path="res://Assets/Sprites/Player/walk/stickman fighter-black-1_-walk normal_05.png" type="Texture" id=35]
+[ext_resource path="res://Assets/Sprites/Player/walk/stickman fighter-black-1_-walk normal_03.png" type="Texture" id=36]
+[ext_resource path="res://Assets/Sprites/Player/walk/stickman fighter-black-1_-walk normal_10.png" type="Texture" id=37]
+[ext_resource path="res://Assets/Sprites/Player/walk/stickman fighter-black-1_-walk normal_04.png" type="Texture" id=38]
+[ext_resource path="res://Assets/Sprites/Player/walk/stickman fighter-black-1_-walk normal_19.png" type="Texture" id=39]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
 "frames": [ ExtResource( 1 ), ExtResource( 4 ), ExtResource( 15 ), ExtResource( 7 ), ExtResource( 5 ), ExtResource( 11 ), ExtResource( 9 ), ExtResource( 2 ), ExtResource( 13 ), ExtResource( 8 ), ExtResource( 6 ), ExtResource( 12 ), ExtResource( 14 ), ExtResource( 3 ), ExtResource( 10 ), ExtResource( 16 ) ],
 "loop": true,
 "name": "idle",
+"speed": 25.0
+}, {
+"frames": [ ExtResource( 22 ), ExtResource( 18 ), ExtResource( 27 ), ExtResource( 36 ), ExtResource( 38 ), ExtResource( 35 ), ExtResource( 19 ), ExtResource( 28 ), ExtResource( 31 ), ExtResource( 33 ), ExtResource( 37 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 26 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 34 ), ExtResource( 25 ), ExtResource( 30 ), ExtResource( 39 ), ExtResource( 32 ), ExtResource( 29 ) ],
+"loop": true,
+"name": "walk",
 "speed": 25.0
 } ]
 
@@ -39,8 +66,8 @@ __meta__ = {
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 1 )
-animation = "idle"
-frame = 13
+animation = "walk"
+frame = 1
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
