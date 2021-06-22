@@ -5,9 +5,10 @@
 
 [node name="Player" instance=ExtResource( 1 )]
 Speed = 100
+JumpSpeed = 300
 
 [node name="AnimatedSprite" parent="." index="0"]
-frame = 10
+frame = 16
 
 [node name="Camera2D" type="Camera2D" parent="." index="1"]
 current = true
