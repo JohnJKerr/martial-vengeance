@@ -1,6 +1,9 @@
 using Godot;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using martialvengeance.Contracts;
+using martialvengeance.Enumerations;
 using Animation = martialvengeance.Enumerations.Animation;
 
 public class Fighter : KinematicBody2D
@@ -14,6 +17,15 @@ public class Fighter : KinematicBody2D
 	private AnimatedSprite AnimatedSprite => GetNode<AnimatedSprite>(nameof(AnimatedSprite));
 	private CollisionShape2D CollisionShape2D => GetNode<CollisionShape2D>(nameof(CollisionShape2D));
 	private IMotion Motion => GetNode<IMotion>(nameof(Motion));
+	private IEnumerable<KinematicCollision2D> Collisions => 
+		Enumerable.Range(0, this.GetSlideCount()).Select(this.GetSlideCollision);
+
+	private Animation CurrentAnimation => Enumeration.FromDisplayName<Animation>(AnimatedSprite.Animation);
+
+	public bool IsJumping => _movement.y < 0;
+	public bool IsLanding => _movement.y > 0 && !IsOnFloor();
+	public bool IsWalking => _movement.x != 0;
+	public bool IsLanded = false;
 
 	public override void _Ready()
 	{
@@ -30,7 +42,15 @@ public class Fighter : KinematicBody2D
 		_movement.y += motion.y;
 		ApplyGravity();
 		Animate();
+		var isLanding = IsLanding;
 		_movement = MoveAndSlide(_movement, Vector2.Up);
+		if (Collisions.Any(c => c.Collider is StaticBody2D) && isLanding) IsLanded = true;
+	}
+	
+
+	public void OnAnimationFinished()
+	{
+		if(CurrentAnimation.Equals(Animation.Landed)) IsLanded = false;
 	}
 
 	private void ApplyGravity()
@@ -42,9 +62,10 @@ public class Fighter : KinematicBody2D
 
 	private void Animate()
 	{
-		AnimatedSprite.Animation = Animation.FromMovement(_movement).ToString();
+		AnimatedSprite.Animation = Animation.FromFighter(this).ToString();
 		if (_movement.x == 0) return;
 		AnimatedSprite.FlipH = _movement.x < 0;
-		CollisionShape2D.Position = new Vector2(-50 * _movement.Sign().x, CollisionShape2D.Position.y);
+		CollisionShape2D.Position = new Vector2(Math.Abs(CollisionShape2D.Position.x) * -(_movement.Sign().x),
+			CollisionShape2D.Position.y);
 	}
 }

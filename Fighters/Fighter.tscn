@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=2]
+[gd_scene load_steps=60 format=2]
 
 [ext_resource path="res://Assets/Sprites/Player/idle/stickman fighter-black-1_-idle_00.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Sprites/Player/idle/stickman fighter-black-1_-idle_07.png" type="Texture" id=2]
@@ -39,6 +39,24 @@
 [ext_resource path="res://Assets/Sprites/Player/walk/stickman fighter-black-1_-walk normal_10.png" type="Texture" id=37]
 [ext_resource path="res://Assets/Sprites/Player/walk/stickman fighter-black-1_-walk normal_04.png" type="Texture" id=38]
 [ext_resource path="res://Assets/Sprites/Player/walk/stickman fighter-black-1_-walk normal_19.png" type="Texture" id=39]
+[ext_resource path="res://Assets/Sprites/Player/jump/stickman fighter-black-1_-jump A_0.png" type="Texture" id=40]
+[ext_resource path="res://Assets/Sprites/Player/jump/stickman fighter-black-1_-jump A_2.png" type="Texture" id=41]
+[ext_resource path="res://Assets/Sprites/Player/jump/stickman fighter-black-1_-jump A_5.png" type="Texture" id=42]
+[ext_resource path="res://Assets/Sprites/Player/jump/stickman fighter-black-1_-jump A_1.png" type="Texture" id=43]
+[ext_resource path="res://Assets/Sprites/Player/jump/stickman fighter-black-1_-jump A_4.png" type="Texture" id=44]
+[ext_resource path="res://Assets/Sprites/Player/jump/stickman fighter-black-1_-jump A_3.png" type="Texture" id=45]
+[ext_resource path="res://Assets/Sprites/Player/landing/stickman fighter-black-1_-jump C_0.png" type="Texture" id=46]
+[ext_resource path="res://Assets/Sprites/Player/landed/stickman fighter-black-1_-jump D_02.png" type="Texture" id=47]
+[ext_resource path="res://Assets/Sprites/Player/landed/stickman fighter-black-1_-jump D_03.png" type="Texture" id=48]
+[ext_resource path="res://Assets/Sprites/Player/landed/stickman fighter-black-1_-jump D_04.png" type="Texture" id=49]
+[ext_resource path="res://Assets/Sprites/Player/landed/stickman fighter-black-1_-jump D_05.png" type="Texture" id=50]
+[ext_resource path="res://Assets/Sprites/Player/landed/stickman fighter-black-1_-jump D_01.png" type="Texture" id=51]
+[ext_resource path="res://Assets/Sprites/Player/landed/stickman fighter-black-1_-jump D_08.png" type="Texture" id=52]
+[ext_resource path="res://Assets/Sprites/Player/landed/stickman fighter-black-1_-jump D_06.png" type="Texture" id=53]
+[ext_resource path="res://Assets/Sprites/Player/landed/stickman fighter-black-1_-jump D_09.png" type="Texture" id=54]
+[ext_resource path="res://Assets/Sprites/Player/landed/stickman fighter-black-1_-jump D_07.png" type="Texture" id=55]
+[ext_resource path="res://Assets/Sprites/Player/landed/stickman fighter-black-1_-jump D_11.png" type="Texture" id=57]
+[ext_resource path="res://Assets/Sprites/Player/landed/stickman fighter-black-1_-jump D_10.png" type="Texture" id=58]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -51,6 +69,21 @@ animations = [ {
 "loop": true,
 "name": "walk",
 "speed": 25.0
+}, {
+"frames": [ ExtResource( 40 ), ExtResource( 43 ), ExtResource( 41 ), ExtResource( 45 ), ExtResource( 44 ), ExtResource( 42 ) ],
+"loop": false,
+"name": "jump",
+"speed": 25.0
+}, {
+"frames": [ ExtResource( 46 ) ],
+"loop": false,
+"name": "landing",
+"speed": 25.0
+}, {
+"frames": [ ExtResource( 51 ), ExtResource( 47 ), ExtResource( 48 ), ExtResource( 49 ), ExtResource( 50 ), ExtResource( 53 ), ExtResource( 55 ), ExtResource( 52 ), ExtResource( 54 ), ExtResource( 58 ), ExtResource( 57 ) ],
+"loop": false,
+"name": "landed",
+"speed": 25.0
 } ]
 
 [sub_resource type="CapsuleShape2D" id=2]
@@ -59,6 +92,7 @@ height = 69.8408
 
 [node name="Fighter" type="KinematicBody2D"]
 scale = Vector2( 0.1, 0.1 )
+collision_mask = 8
 script = ExtResource( 17 )
 __meta__ = {
 "_editor_description_": "		"
@@ -66,10 +100,11 @@ __meta__ = {
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 1 )
-animation = "walk"
-frame = 12
+animation = "landed"
+frame = 10
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -50, 242 )
 shape = SubResource( 2 )
+[connection signal="animation_finished" from="AnimatedSprite" to="." method="OnAnimationFinished"]
