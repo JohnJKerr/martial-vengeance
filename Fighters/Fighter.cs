@@ -16,10 +16,12 @@ public class Fighter : KinematicBody2D
 
 	private AnimatedSprite AnimatedSprite => GetNode<AnimatedSprite>(nameof(AnimatedSprite));
 	private CollisionShape2D CollisionShape2D => GetNode<CollisionShape2D>(nameof(CollisionShape2D));
+	private AnimationPlayer ActionAnimationPlayer => GetNode<AnimationPlayer>(nameof(ActionAnimationPlayer));
+	private AnimationPlayer DirectionAnimationPlayer => GetNode<AnimationPlayer>(nameof(DirectionAnimationPlayer));
+	private Direction CurrentDirection { get; set; } = Direction.Right;
 	private IMotion Motion => GetNode<IMotion>(nameof(Motion));
 	private IEnumerable<KinematicCollision2D> Collisions => 
 		Enumerable.Range(0, this.GetSlideCount()).Select(this.GetSlideCollision);
-
 	private Animation CurrentAnimation => Enumeration.FromDisplayName<Animation>(AnimatedSprite.Animation);
 
 	public bool IsJumping => _movement.y < 0;
@@ -41,16 +43,17 @@ public class Fighter : KinematicBody2D
 		_movement.x = motion.x;
 		_movement.y += motion.y;
 		ApplyGravity();
+		CurrentDirection = Direction.FromMovement(_movement) ?? CurrentDirection;
 		Animate();
 		var isLanding = IsLanding;
 		_movement = MoveAndSlide(_movement, Vector2.Up);
 		if (Collisions.Any(c => c.Collider is StaticBody2D) && isLanding) IsLanded = true;
 	}
-	
 
 	public void OnAnimationFinished()
 	{
 		if(CurrentAnimation.Equals(Animation.Landed)) IsLanded = false;
+		Animate();
 	}
 
 	private void ApplyGravity()
@@ -63,9 +66,13 @@ public class Fighter : KinematicBody2D
 	private void Animate()
 	{
 		AnimatedSprite.Animation = Animation.FromFighter(this).ToString();
-		if (_movement.x == 0) return;
-		AnimatedSprite.FlipH = _movement.x < 0;
-		CollisionShape2D.Position = new Vector2(Math.Abs(CollisionShape2D.Position.x) * -(_movement.Sign().x),
-			CollisionShape2D.Position.y);
+		AnimatedSprite.FlipH = Direction.Left.Equals(CurrentDirection);
+		var animations = ActionAnimationPlayer.GetAnimationList().ToList();
+		var animation = animations.First(a =>
+			a.Equals($"{CurrentAnimation}-{CurrentDirection}") || a.Equals(CurrentAnimation.ToString()));
+		ActionAnimationPlayer.CurrentAnimation = animation;
+		ActionAnimationPlayer.Play();
+		DirectionAnimationPlayer.CurrentAnimation = CurrentDirection.ToString();
+		DirectionAnimationPlayer.Play();
 	}
 }

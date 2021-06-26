@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using Godot;
 
 namespace martialvengeance.Enumerations
@@ -19,5 +21,8 @@ namespace martialvengeance.Enumerations
 		public static Direction Right = new Direction(1, nameof(Right), Vector2.Right);
 
 		public bool IsPressed => Input.IsActionPressed(ToString());
+
+		public static Direction FromMovement(Vector2 movement) =>
+			GetAll<Direction>().FirstOrDefault(d => Math.Abs(d.Movement.x - movement.Sign().x) < 0.01);
 	}
 }

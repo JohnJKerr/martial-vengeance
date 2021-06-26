@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=2]
+[gd_scene load_steps=68 format=2]
 
 [ext_resource path="res://Assets/Sprites/Player/idle/stickman fighter-black-1_-idle_00.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Sprites/Player/idle/stickman fighter-black-1_-idle_07.png" type="Texture" id=2]
@@ -70,6 +70,11 @@ animations = [ {
 "name": "walk",
 "speed": 25.0
 }, {
+"frames": [ ExtResource( 51 ), ExtResource( 47 ), ExtResource( 48 ), ExtResource( 49 ), ExtResource( 50 ), ExtResource( 53 ), ExtResource( 55 ), ExtResource( 52 ), ExtResource( 54 ), ExtResource( 58 ), ExtResource( 57 ) ],
+"loop": false,
+"name": "landed",
+"speed": 25.0
+}, {
 "frames": [ ExtResource( 40 ), ExtResource( 43 ), ExtResource( 41 ), ExtResource( 45 ), ExtResource( 44 ), ExtResource( 42 ) ],
 "loop": false,
 "name": "jump",
@@ -79,12 +84,127 @@ animations = [ {
 "loop": false,
 "name": "landing",
 "speed": 25.0
-}, {
-"frames": [ ExtResource( 51 ), ExtResource( 47 ), ExtResource( 48 ), ExtResource( 49 ), ExtResource( 50 ), ExtResource( 53 ), ExtResource( 55 ), ExtResource( 52 ), ExtResource( 54 ), ExtResource( 58 ), ExtResource( 57 ) ],
-"loop": false,
-"name": "landed",
-"speed": 25.0
 } ]
+
+[sub_resource type="Animation" id=3]
+resource_name = "left"
+tracks/0/type = "value"
+tracks/0/path = NodePath("CollisionShape2D:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 50.0 ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "right"
+tracks/0/type = "value"
+tracks/0/path = NodePath("CollisionShape2D:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ -50.0 ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "idle"
+tracks/0/type = "value"
+tracks/0/path = NodePath("CollisionShape2D:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 242.0 ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "jump"
+tracks/0/type = "value"
+tracks/0/path = NodePath("CollisionShape2D:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 242.0, 182.0, 122.0 ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "landed"
+tracks/0/type = "value"
+tracks/0/path = NodePath("CollisionShape2D:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 242.0 ]
+}
+
+[sub_resource type="Animation" id=10]
+resource_name = "landing-left"
+tracks/0/type = "value"
+tracks/0/path = NodePath("CollisionShape2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -50, 102 ) ]
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "landing-right"
+tracks/0/type = "value"
+tracks/0/path = NodePath("CollisionShape2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 50, 102 ) ]
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "walk"
+tracks/0/type = "value"
+tracks/0/path = NodePath("CollisionShape2D:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 242.0 ]
+}
 
 [sub_resource type="CapsuleShape2D" id=2]
 radius = 56.0615
@@ -99,12 +219,24 @@ __meta__ = {
 }
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+scale = Vector2( 1, 1 )
 frames = SubResource( 1 )
-animation = "landed"
-frame = 10
+animation = "landing"
 playing = true
 
+[node name="DirectionAnimationPlayer" type="AnimationPlayer" parent="."]
+anims/left = SubResource( 3 )
+anims/right = SubResource( 4 )
+
+[node name="ActionAnimationPlayer" type="AnimationPlayer" parent="."]
+anims/idle = SubResource( 5 )
+anims/jump = SubResource( 6 )
+anims/landed = SubResource( 7 )
+anims/landing-left = SubResource( 10 )
+anims/landing-right = SubResource( 8 )
+anims/walk = SubResource( 9 )
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( -50, 242 )
+position = Vector2( -50, 102 )
 shape = SubResource( 2 )
 [connection signal="animation_finished" from="AnimatedSprite" to="." method="OnAnimationFinished"]
