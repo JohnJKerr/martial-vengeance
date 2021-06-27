@@ -65,9 +65,9 @@ animations = [ {
 "name": "idle",
 "speed": 25.0
 }, {
-"frames": [ ExtResource( 22 ), ExtResource( 18 ), ExtResource( 27 ), ExtResource( 36 ), ExtResource( 38 ), ExtResource( 35 ), ExtResource( 19 ), ExtResource( 28 ), ExtResource( 31 ), ExtResource( 33 ), ExtResource( 37 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 26 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 34 ), ExtResource( 25 ), ExtResource( 30 ), ExtResource( 39 ), ExtResource( 32 ), ExtResource( 29 ) ],
-"loop": true,
-"name": "walk",
+"frames": [ ExtResource( 46 ) ],
+"loop": false,
+"name": "landing",
 "speed": 25.0
 }, {
 "frames": [ ExtResource( 51 ), ExtResource( 47 ), ExtResource( 48 ), ExtResource( 49 ), ExtResource( 50 ), ExtResource( 53 ), ExtResource( 55 ), ExtResource( 52 ), ExtResource( 54 ), ExtResource( 58 ), ExtResource( 57 ) ],
@@ -80,13 +80,13 @@ animations = [ {
 "name": "jump",
 "speed": 25.0
 }, {
-"frames": [ ExtResource( 46 ) ],
-"loop": false,
-"name": "landing",
+"frames": [ ExtResource( 22 ), ExtResource( 18 ), ExtResource( 27 ), ExtResource( 36 ), ExtResource( 38 ), ExtResource( 35 ), ExtResource( 19 ), ExtResource( 28 ), ExtResource( 31 ), ExtResource( 33 ), ExtResource( 37 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 26 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 34 ), ExtResource( 25 ), ExtResource( 30 ), ExtResource( 39 ), ExtResource( 32 ), ExtResource( 29 ) ],
+"loop": true,
+"name": "walk",
 "speed": 25.0
 } ]
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=2]
 resource_name = "left"
 tracks/0/type = "value"
 tracks/0/path = NodePath("CollisionShape2D:position:x")
@@ -101,7 +101,7 @@ tracks/0/keys = {
 "values": [ 50.0 ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=3]
 resource_name = "right"
 tracks/0/type = "value"
 tracks/0/path = NodePath("CollisionShape2D:position:x")
@@ -116,7 +116,7 @@ tracks/0/keys = {
 "values": [ -50.0 ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=4]
 resource_name = "idle"
 tracks/0/type = "value"
 tracks/0/path = NodePath("CollisionShape2D:position:y")
@@ -131,7 +131,7 @@ tracks/0/keys = {
 "values": [ 242.0 ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=5]
 resource_name = "jump"
 tracks/0/type = "value"
 tracks/0/path = NodePath("CollisionShape2D:position:y")
@@ -146,7 +146,7 @@ tracks/0/keys = {
 "values": [ 242.0, 182.0, 122.0 ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=6]
 resource_name = "landed"
 tracks/0/type = "value"
 tracks/0/path = NodePath("CollisionShape2D:position:y")
@@ -161,7 +161,7 @@ tracks/0/keys = {
 "values": [ 242.0 ]
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=7]
 resource_name = "landing-left"
 tracks/0/type = "value"
 tracks/0/path = NodePath("CollisionShape2D:position")
@@ -206,7 +206,7 @@ tracks/0/keys = {
 "values": [ 242.0 ]
 }
 
-[sub_resource type="CapsuleShape2D" id=2]
+[sub_resource type="CapsuleShape2D" id=10]
 radius = 56.0615
 height = 69.8408
 
@@ -219,24 +219,23 @@ __meta__ = {
 }
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-scale = Vector2( 1, 1 )
 frames = SubResource( 1 )
 animation = "landing"
 playing = true
 
 [node name="DirectionAnimationPlayer" type="AnimationPlayer" parent="."]
-anims/left = SubResource( 3 )
-anims/right = SubResource( 4 )
+anims/left = SubResource( 2 )
+anims/right = SubResource( 3 )
 
 [node name="ActionAnimationPlayer" type="AnimationPlayer" parent="."]
-anims/idle = SubResource( 5 )
-anims/jump = SubResource( 6 )
-anims/landed = SubResource( 7 )
-anims/landing-left = SubResource( 10 )
+anims/idle = SubResource( 4 )
+anims/jump = SubResource( 5 )
+anims/landed = SubResource( 6 )
+anims/landing-left = SubResource( 7 )
 anims/landing-right = SubResource( 8 )
 anims/walk = SubResource( 9 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -50, 102 )
-shape = SubResource( 2 )
+shape = SubResource( 10 )
 [connection signal="animation_finished" from="AnimatedSprite" to="." method="OnAnimationFinished"]

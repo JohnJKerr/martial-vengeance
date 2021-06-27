@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using martialvengeance.Contracts;
 using martialvengeance.Enumerations;
-using Animation = martialvengeance.Enumerations.Animation;
 
 public class Fighter : KinematicBody2D
 {
 	private const int Gravity = 10;
 	private Vector2 _movement = Vector2.Zero;
+	private Vector2 _motion = Vector2.Zero;
 
 	[Export] public int Speed { get; set; }
 	[Export] public int JumpSpeed { get; set; }
@@ -18,16 +18,11 @@ public class Fighter : KinematicBody2D
 	private CollisionShape2D CollisionShape2D => GetNode<CollisionShape2D>(nameof(CollisionShape2D));
 	private AnimationPlayer ActionAnimationPlayer => GetNode<AnimationPlayer>(nameof(ActionAnimationPlayer));
 	private AnimationPlayer DirectionAnimationPlayer => GetNode<AnimationPlayer>(nameof(DirectionAnimationPlayer));
-	private Direction CurrentDirection { get; set; } = Direction.Right;
 	private IMotion Motion => GetNode<IMotion>(nameof(Motion));
 	private IEnumerable<KinematicCollision2D> Collisions => 
-		Enumerable.Range(0, this.GetSlideCount()).Select(this.GetSlideCollision);
-	private Animation CurrentAnimation => Enumeration.FromDisplayName<Animation>(AnimatedSprite.Animation);
-
-	public bool IsJumping => _movement.y < 0;
-	public bool IsLanding => _movement.y > 0 && !IsOnFloor();
-	public bool IsWalking => _movement.x != 0;
-	public bool IsLanded = false;
+		Enumerable.Range(0, GetSlideCount()).Select(GetSlideCollision);
+	private Direction CurrentDirection { get; set; } = Direction.Right;
+	private State CurrentState { get; set; } = State.Idle;
 
 	public override void _Ready()
 	{
@@ -39,20 +34,19 @@ public class Fighter : KinematicBody2D
 	public override void _PhysicsProcess(float delta)
 	{
 		base._PhysicsProcess(delta);
-		var motion = Motion.Get();
-		_movement.x = motion.x;
-		_movement.y += motion.y;
+		_motion = Motion.Get();
+		_movement.x = _motion.x;
+		_movement.y += _motion.y;
 		ApplyGravity();
-		CurrentDirection = Direction.FromMovement(_movement) ?? CurrentDirection;
-		Animate();
-		var isLanding = IsLanding;
 		_movement = MoveAndSlide(_movement, Vector2.Up);
-		if (Collisions.Any(c => c.Collider is StaticBody2D) && isLanding) IsLanded = true;
+		CurrentDirection = Direction.FromMovement(_movement) ?? CurrentDirection;
+		CurrentState = GetState() ?? CurrentState;
+		Animate();
 	}
 
 	public void OnAnimationFinished()
 	{
-		if(CurrentAnimation.Equals(Animation.Landed)) IsLanded = false;
+		if (CurrentState.Equals(State.Landed)) CurrentState = State.Idle;
 		Animate();
 	}
 
@@ -65,14 +59,25 @@ public class Fighter : KinematicBody2D
 
 	private void Animate()
 	{
-		AnimatedSprite.Animation = Animation.FromFighter(this).ToString();
+		AnimatedSprite.Animation = CurrentState.ToString();
 		AnimatedSprite.FlipH = Direction.Left.Equals(CurrentDirection);
 		var animations = ActionAnimationPlayer.GetAnimationList().ToList();
 		var animation = animations.First(a =>
-			a.Equals($"{CurrentAnimation}-{CurrentDirection}") || a.Equals(CurrentAnimation.ToString()));
+			a.Equals($"{CurrentState}-{CurrentDirection}") || a.Equals(CurrentState.ToString()));
 		ActionAnimationPlayer.CurrentAnimation = animation;
 		ActionAnimationPlayer.Play();
 		DirectionAnimationPlayer.CurrentAnimation = CurrentDirection.ToString();
 		DirectionAnimationPlayer.Play();
+	}
+
+	private State GetState()
+	{
+		if (_motion.y < 0) return State.Jump;
+		if (_movement.y > 0 && !IsOnFloor()) return State.Landing;
+		if (_motion.x != 0 && IsOnFloor()) return State.Walk;
+		if (Collisions.Any(c => c.Collider is StaticBody2D) && State.Landing.Equals(CurrentState))
+			return State.Landed;
+		if(IsOnFloor() && _motion.x == 0 && !State.Idle.Equals(CurrentState)) return State.Idle;
+		return default;
 	}
 }
