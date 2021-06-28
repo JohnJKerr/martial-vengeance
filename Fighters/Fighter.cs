@@ -77,7 +77,7 @@ public class Fighter : KinematicBody2D
 		if (_motion.x != 0 && IsOnFloor()) return State.Walk;
 		if (Collisions.Any(c => c.Collider is StaticBody2D) && State.Landing.Equals(CurrentState))
 			return State.Landed;
-		if(IsOnFloor() && _motion.x == 0 && !State.Idle.Equals(CurrentState)) return State.Idle;
+		if(IsOnFloor() && _motion.x == 0 && !State.Landed.Equals(CurrentState)) return State.Idle;
 		return default;
 	}
 }
