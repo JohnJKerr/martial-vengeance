@@ -22,7 +22,7 @@ namespace martialvengeance.Enumerations
 
 		public bool IsPressed => Input.IsActionPressed(ToString());
 
-		public static Direction FromMovement(Vector2 movement) =>
-			GetAll<Direction>().FirstOrDefault(d => Math.Abs(d.Movement.x - movement.Sign().x) < 0.01);
+		public static Direction FromMotion(Vector2 motion) =>
+			GetAll<Direction>().FirstOrDefault(d => Math.Abs(d.Movement.x - motion.Sign().x) < 0.01);
 	}
 }
